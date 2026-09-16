@@ -1,7 +1,8 @@
-The first KPI we are tracking is spend per category : shopping vs Travel and shopping+Travel. 
+Core KPIs Tracked (FY 2025 | Products 101 & 102):
 
-*)Total transaction_volume (total unique transaction for shopping vs Travel on both cards 101(Blue Cash preferred) & 
-102(Blue Cash Everyday).  
-*)Spend per Shopping + Travel in 2025 on credit cards 101, 102 . Spend per Shopping vs travel in 2025 on credit cards 101,102
+Transaction Volume: Total count of individual purchase events (COUNT(trnx_id)), segmented by Shopping and Travel categories, to evaluate card 
+usage frequency.
 
+Category Spend: Total monetary volume of purchases (SUM(order_value)), evaluated individually (Shopping vs. Travel) and combined (Shopping + Travel), 
+to measure portfolio revenue generation across Product 101 (Blue Cash Preferred) and Product 102 (Blue Cash Everyday).
 
