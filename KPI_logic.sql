@@ -31,20 +31,20 @@ select * from account_spend_per_category_view
 
 
 KPI2 : Transaction_Volume logic :
--- transaction volume per category 
-
--- unique transaction volume per category both cards & have same trnx_count
-select distinct  merchant_code, merchant_code_description,p.product_name,
-count(trnx_id)over(partition by merchant_code) as total_card_trnx_per_category
+---transaction_volume : catgeory_trnx_count in 2025
+select f.merchant_code, f.merchant_code_description,
+p.product_name,
+count(trnx_id)filter(where f.merchant_code_description LIKE '%Groceries%') as total_captured_travel_trnxs,
+count(trnx_id)filter(where f.merchant_code_description LIKE '%Streaming%') as total_captured_streaming_trnxs,
+count(trnx_id)filter(where f.merchant_code_description LIKE '%Restaurant%') as total_captured_streaming_trnxs
 from RFM_ANALYSIS.fact_transactions f 
 inner join RFM_ANALYSIS.dim_products p 
 on f.product_code=p.product_code 
-where trnx_date>='01-01-2025' 
-and trnx_date<='12-31-2025'
+where f.trnx_date>='01-01-2025' 
+and f.trnx_date<='12-31-2025'
 and f.product_code in ('101','102') 
 and f.merchant_code in ('9135', '9144', '9147', '9149') 
-group by merchant_code, merchant_code_description,product_name,trnx_id 
-order by total_card_trnx_per_category asc 
+group by f.merchant_code, f.merchant_code_description,p.product_name  
 
 
 
