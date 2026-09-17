@@ -1,5 +1,6 @@
 KPI_1 : baseline_per_category Logic : 
-create VIEW customer_spend_per_category_view as (
+
+create view account_spend_per_category_view as (
 SELECT 
     merchant_code, 
     merchant_code_description,
@@ -22,40 +23,17 @@ INNER JOIN RFM_ANALYSIS.dim_products p
 WHERE trnx_date >= '2025-01-01' 
   AND trnx_date <= '2025-12-31'
   AND f.product_code IN ('101', '102') 
-  AND f.merchant_code IN ('9136', '9139', '9145', '9148') 
+  AND f.merchant_code IN ('9135', '9144', '9147', '9149') 
 GROUP BY merchant_code, merchant_code_description, product_name
 
 ) 
-select * from customer_spend_per_category_view
+select * from account_spend_per_category_view
 
--- updating view as category changed from shopping to medical services : 
-CREATE OR REPLACE VIEW RFM_ANALYSIS.customer_spend_per_category_view AS
-SELECT 
-    merchant_code, 
-    merchant_code_description,
-    p.product_name,
-    SUM(trnx_amt) AS total_yearly_spend_per_category,   
-    CONCAT('$', ROUND(SUM(trnx_amt) / 1000000.0, 1), 'M') AS yearly_category_spend_in_millions,
-    
-    -- 1. Forcing a decimal division (.0) so decimals don't get truncated
-    ROUND(SUM(trnx_amt) / 12.0, 2) AS avg_monthly_spend_per_category,
-    
-    -- 2. Total Yearly Spend divided by Unique Customers (Formatted nicely)
-    ROUND(SUM(trnx_amt) / COUNT(DISTINCT account_id), 2) AS avg_yearly_spend_per_customer_per_category,
-    
-    -- 3. Monthly spend per customer math
-    ROUND((SUM(trnx_amt) / 12.0) / COUNT(DISTINCT account_id), 2) AS avg_monthly_spend_per_customer_per_category
 
-FROM RFM_ANALYSIS.fact_transactions f 
-INNER JOIN RFM_ANALYSIS.dim_products p 
-    ON f.product_code = p.product_code  
-WHERE trnx_date >= '2025-01-01' 
-  AND trnx_date <= '2025-12-31'
-  AND f.product_code IN ('101', '102') 
-  AND f.merchant_code IN ('9150', '9148') -- Updated from '9136',9139 to '9150'
-GROUP BY merchant_code, merchant_code_description, product_name; 
 
-Transaction_Volume logic :
+
+
+KPI2 : Transaction_Volume logic :
 -- transaction volume per category 
 select f.merchant_code, f.merchant_code_description,
 p.product_name,
