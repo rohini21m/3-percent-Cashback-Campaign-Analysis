@@ -1,3 +1,6 @@
+Used Gemini AI to genearet the DDL script of 1.9 million rows of fact table transactions and dimensional tables of 30k customer accounts.
+
+
 CREATE SCHEMA IF NOT EXISTS RFM_analysis;
 
 -- ==========================================
