@@ -1,0 +1,7 @@
+Definition of Each KPI
+KPI 1: baseline_spend_per_category : Total_spend_per_catgeory over 12 months in 2025 (calculate avg spend amount) for Q1, Q2, Q3, Q4
+KPI2 : transaction volumes (unique trnx captured per each category in 2025 all 12 months)
+KPI 3:  Customer segmentation (high spend  >$1500 from Jan to March, medium spend >=750<=1500, low_spend <=$750 for all 3 categories combined 
+KPI 4: %  of accounts getting credit (cash backs)  of 3% ($45 already) in 2025 in q1 2025  
+Metics : Share of Wallet Percentage : total_spend_category_each_month/total_spend_on_credit_card. Calculate this metric for all 12 months in SQL 
+& Tableau. 
