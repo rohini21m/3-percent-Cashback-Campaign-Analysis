@@ -1,8 +1,0 @@
-KPI definition :
-
-Transaction Volume: Total count of individual purchase events (COUNT(trnx_id)), segmented by Shopping and Travel categories, to evaluate card 
-usage frequency.
-
-Baseline Category Spend: Total monetary volume of purchases (SUM(order_value)), evaluated individually (Shopping vs. Travel) and combined (Shopping + Travel), 
-to measure portfolio revenue generation across Product 101 (Blue Cash Preferred) and Product 102 (Blue Cash Everyday).
-
