@@ -1,4 +1,5 @@
-Metrics : 2025_Credit_tranascation_Count
+a)Metrics : 2025_Credit_transacation_Count
+
 select p.product_name, f.merchant_code_description,count(f.trnx_id) as 2025_credit_trnx_count
 from RFM_analysis.fact_transactions f 
 join RFM_analysis.dim_products p 
@@ -6,4 +7,29 @@ on p.product_code=f.product_code
 where f.trnx_date>='01-01-2025' 
 and f.trnx_date<='12-31-2025' 
 and p.product_code in ('101','102')
-group by p.product_name,f.merchant_code_description
+group by p.product_name,f.merchant_code_description 
+
+b)Metrics : Cutsomers with repeated purchases in given category :Groceries, streaming, restaurants
+  
+  WITH customer_monthly_freq AS (
+    SELECT 
+        account_id,
+        merchant_code_description,
+        TO_CHAR(trnx_date, 'YYYY-MM') AS trnx_month,
+        COUNT(trnx_id) AS customer_trnx_count
+    FROM RFM_ANALYSIS.fact_transactions   
+    WHERE trnx_date >= '2025-01-01' AND trnx_date <= '2025-03-31' 
+      AND product_code IN ('101', '102') 
+      AND merchant_code IN ('9135', '9144', '9147', '9149') 
+    GROUP BY account_id, merchant_code_description, TO_CHAR(trnx_date, 'YYYY-MM')
+)
+SELECT 
+    merchant_code_description,
+    trnx_month,
+    -- Counts how many unique accounts crossed the multi-transaction threshold
+    COUNT(DISTINCT CASE WHEN customer_trnx_count > 1 THEN account_id END) AS repeat_customers_count,
+    -- Sums up all transactions made strictly by these repeat buyers
+    SUM(CASE WHEN customer_trnx_count > 1 THEN customer_trnx_count ELSE 0 END) AS repeat_customer_total_trnxs
+FROM customer_monthly_freq
+GROUP BY merchant_code_description, trnx_month
+ORDER BY trnx_month ASC, repeat_customers_count DESC;
