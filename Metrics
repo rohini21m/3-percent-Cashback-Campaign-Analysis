@@ -1,0 +1,9 @@
+Metrics : 2025_Credit_tranascation_Count
+select p.product_name, f.merchant_code_description,count(f.trnx_id) as 2025_credit_trnx_count
+from RFM_analysis.fact_transactions f 
+join RFM_analysis.dim_products p 
+on p.product_code=f.product_code
+where f.trnx_date>='01-01-2025' 
+and f.trnx_date<='12-31-2025' 
+and p.product_code in ('101','102')
+group by p.product_name,f.merchant_code_description
