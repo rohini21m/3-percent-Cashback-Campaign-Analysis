@@ -32,4 +32,36 @@ SELECT
     SUM(CASE WHEN customer_trnx_count > 1 THEN customer_trnx_count ELSE 0 END) AS repeat_customer_total_trnxs
 FROM customer_monthly_freq
 GROUP BY merchant_code_description, trnx_month
-ORDER BY trnx_month ASC, repeat_customers_count DESC;
+ORDER BY trnx_month ASC, repeat_customers_count DESC; 
+
+Metric 3  Q1 Indivial category spending groups 
+-- this query gives spending groups across individual category in Q1 beyond spend $1500
+with acct_spend_cte as (
+select p.product_name,
+merchant_code_description,
+account_id,
+sum(trnx_amt) as total_Q1_card_purchases 
+from RFM_ANALYSIS.fact_transactions f 
+inner join RFM_ANALYSIS.dim_products p 
+on p.product_code=f.product_code
+WHERE trnx_date >= '2025-01-01' AND trnx_date <= '2025-03-31' 
+AND p.product_code IN ('101', '102') 
+AND merchant_code IN ('9135', '9144', '9147', '9149') 
+GROUP by product_name,merchant_code_description,account_id
+), spending_segmentation as(
+select account_id, 
+merchant_code_description,
+total_Q1_card_purchases,
+product_name,
+case when total_Q1_card_purchases>1500 then 'High_Spending_Accounts' 
+when  total_Q1_card_purchases>750 AND total_Q1_card_purchases <=1500 then 'Medium_Spending_Accounts'
+else 'Low_Spending_Accounts'  
+end as Spending_groups
+from acct_spend_cte 
+) 
+select merchant_code_description,product_name,Spending_groups,
+sum(total_Q1_card_purchases) as cummulative_Q1_Spend_by_all_accts,
+count(distinct account_id) as Total_Accounts,
+round(sum(total_Q1_card_purchases)/count(distinct account_id),2) as avg_spend_per_account_in_Q1
+from spending_segmentation
+group by merchant_code_description,Spending_groups,product_name
