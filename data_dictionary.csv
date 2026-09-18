@@ -1,0 +1,39 @@
+Column Name,Data Type,Constraints,Description
+account_id,UUID,PRIMARY KEY,Unique identifier for the financial account.
+customer_id,UUID,FOREIGN KEY,Links to dim_customers.customer_id.
+product_code,INT,FOREIGN KEY,Links to dim_products.product_code.
+account_number,VARCHAR(20),UNIQUE,"Masked or explicit account string identifier (e.g., AMEX-00000001)."
+account_type,VARCHAR(20),,"Classification of the account (Credit Card, Checking)."
+account_start_date,DATE,,Date the account was opened.
+account_end_date,DATE,,Date the account was closed (NULL if active).
+id,SERIAL,PRIMARY KEY,Auto-incrementing surrogate row identifier.
+account_id,UUID,FOREIGN KEY,Links transaction to dim_accounts.account_id.
+product_code,INT,FOREIGN KEY,Links transaction to dim_products.product_code.
+merchant_code,VARCHAR(50),,"Category of merchant (e.g., RETAIL_SHOPPING, TRAVEL_AIRLINES)."
+credit_card_number,VARCHAR(15),,Masked or simulated card number used for the transaction.
+transaction_id,UUID,,Unique identifier for the individual transaction event.
+transaction_amt,"DECIMAL(10,2)",,Monetary value of the transaction.
+transaction_date,DATE,,Calendar date when the transaction occurred.
+trx_timestamp,TIMESTAMP,,Exact timestamp of the transaction.
+location,VARCHAR(100),,"Geographic location (City, State) of the transaction."
+ip_address,VARCHAR(45),,IP address associated with digital or card-not-present triggers.
+fees,"DECIMAL(10,2)",,Any applicable transaction or late fees assessed.
+interest,"DECIMAL(10,2)",,Interest charges applied to the balance.
+credits,"DECIMAL(10,2)",,"Refunds, returns, or statement credits applied."
+previous_balance,"DECIMAL(12,2)",,Account balance prior to the transaction.
+status,INT,,"Transaction processing status code (e.g., 0 for success, negative for failures)."
+customer_id,UUID,PRIMARY KEY,Unique identifier for each customer profile.
+customer_age,INT,,Age of the customer in years.
+marital_status,VARCHAR(20),,"Marital status (Single, Married, Divorced)."
+customer_contact_no,VARCHAR(20),,Primary phone contact number.
+customer_email,VARCHAR(100),,Customer email address.
+customer_birthdate,DATE,,Customer date of birth.
+state,VARCHAR(50),,U.S. state of residence.
+city,VARCHAR(50),,City of residence.
+country,VARCHAR(50),,Country of residence.
+zipcode,VARCHAR(10),,Postal ZIP code.
+product_code,INT,PRIMARY KEY,"Unique identifier code for each card product (e.g., 101–104)."
+product_name,VARCHAR(100),,Official marketing name of the card product.
+credit_line,"DECIMAL(12,2)",,Standard allocated credit limit for the product tier.
+apr,"DECIMAL(5,2)",,Annual Percentage Rate applied to carrying balances.
+cashback_pct,"DECIMAL(5,2)",,Baseline cashback or reward percentage earned on spend.
